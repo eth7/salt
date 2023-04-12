@@ -1003,6 +1003,7 @@ def parse_cookie_header(header):
         # Remove attribs that don't apply to Cookie objects
         cookie.pop("httponly", None)
         cookie.pop("samesite", None)
+        cookie.pop("max-age", None)
         ret.append(http.cookiejar.Cookie(name=name, value=value, **cookie))
 
     return ret
