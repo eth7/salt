@@ -16,6 +16,7 @@ import pprint
 import re
 import socket
 import ssl
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -988,6 +989,11 @@ def parse_cookie_header(header):
         # cookielib.Cookie() requires an epoch
         if "expires" in cookie:
             cookie["expires"] = http.cookiejar.http2time(cookie["expires"])
+
+        # Overwrite expires attribute if max-age is set and remove max-age attrib
+        if "max-age" in cookie:
+            cookie["expires"] = int(time.time()) + int(cookie["max-age"])
+            cookie.pop("max-age", None)
 
         # Fill in missing required fields
         for req in reqd:
